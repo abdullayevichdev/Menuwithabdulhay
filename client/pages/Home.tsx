@@ -3,7 +3,7 @@ import { ArrowRight, Clock, Users, Sparkles } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-restaurant-light">
+    <div className="min-h-screen" style={{ backgroundColor: "#faf8f3" }}>
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-restaurant-dark via-transparent to-restaurant-dark opacity-30" />
