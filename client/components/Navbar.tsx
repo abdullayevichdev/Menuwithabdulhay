@@ -1,105 +1,237 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { getTotalItems } = useCart();
 
   const isActive = (path: string) => location.pathname === path;
+  const cartItems = getTotalItems();
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
+    <nav style={{ backgroundColor: "white", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", position: "sticky", top: 0, zIndex: 50 }}>
+      <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "16px 24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold text-restaurant-dark hover:text-restaurant-accent transition-colors"
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              color: "#1a1a1a",
+              textDecoration: "none",
+              transition: "color 0.3s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#c9a961";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#1a1a1a";
+            }}
           >
-            🍽️ <span className="hidden sm:inline">Culinary</span>
+            🍽️ <span style={{ display: "none" }} className="hidden sm:inline">Culinary</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div style={{ display: "none", gap: "32px", alignItems: "center" }} className="hidden md:flex">
             <Link
               to="/"
-              className={`font-semibold transition-colors ${
-                isActive("/")
-                  ? "text-restaurant-accent border-b-2 border-restaurant-accent pb-1"
-                  : "text-restaurant-dark hover:text-restaurant-accent"
-              }`}
+              style={{
+                fontWeight: "600",
+                textDecoration: "none",
+                color: isActive("/") ? "#c9a961" : "#1a1a1a",
+                borderBottom: isActive("/") ? "2px solid #c9a961" : "none",
+                paddingBottom: isActive("/") ? "4px" : "0",
+                transition: "color 0.3s",
+              }}
             >
               Home
             </Link>
             <Link
               to="/menu"
-              className={`font-semibold transition-colors ${
-                isActive("/menu")
-                  ? "text-restaurant-accent border-b-2 border-restaurant-accent pb-1"
-                  : "text-restaurant-dark hover:text-restaurant-accent"
-              }`}
+              style={{
+                fontWeight: "600",
+                textDecoration: "none",
+                color: isActive("/menu") ? "#c9a961" : "#1a1a1a",
+                borderBottom: isActive("/menu") ? "2px solid #c9a961" : "none",
+                paddingBottom: isActive("/menu") ? "4px" : "0",
+                transition: "color 0.3s",
+              }}
             >
               Menu
             </Link>
             <Link
+              to="/cart"
+              style={{
+                position: "relative",
+                textDecoration: "none",
+              }}
+            >
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 16px",
+                backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/cart") ? "white" : "#1a1a1a",
+                borderRadius: "8px",
+                fontWeight: "600",
+                transition: "all 0.3s",
+                cursor: "pointer",
+              }}>
+                <ShoppingCart size={20} />
+                Cart
+                {cartItems > 0 && (
+                  <span style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minWidth: "24px",
+                    height: "24px",
+                    backgroundColor: "#c9a961",
+                    color: "#1a1a1a",
+                    borderRadius: "50%",
+                    fontSize: "0.75rem",
+                    fontWeight: "bold",
+                  }}>
+                    {cartItems}
+                  </span>
+                )}
+              </div>
+            </Link>
+            <Link
               to="/login"
-              className={`px-6 py-2 rounded-lg font-semibold ${
-                isActive("/login")
-                  ? "bg-restaurant-dark text-white"
-                  : "bg-restaurant-light text-restaurant-dark hover:bg-restaurant-accent/20"
-              } transition-colors`}
+              style={{
+                padding: "8px 24px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                backgroundColor: isActive("/login") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/login") ? "white" : "#1a1a1a",
+                textDecoration: "none",
+                transition: "all 0.3s",
+              }}
             >
               Admin
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-restaurant-dark hover:text-restaurant-accent transition-colors"
-          >
-            {isOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile Menu Button & Cart */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }} className="md:hidden">
+            <Link
+              to="/cart"
+              style={{
+                position: "relative",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ShoppingCart size={24} style={{ color: "#1a1a1a" }} />
+              {cartItems > 0 && (
+                <span style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "20px",
+                  height: "20px",
+                  backgroundColor: "#c9a961",
+                  color: "#1a1a1a",
+                  borderRadius: "50%",
+                  fontSize: "0.75rem",
+                  fontWeight: "bold",
+                }}>
+                  {cartItems}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              style={{
+                padding: "8px",
+                color: "#1a1a1a",
+                backgroundColor: "transparent",
+                border: "none",
+                cursor: "pointer",
+                transition: "color 0.3s",
+              }}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-gray-200 space-y-3">
+          <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid #e5e7eb", display: "flex", flexDirection: "column", gap: "12px" }}>
             <Link
               to="/"
               onClick={() => setIsOpen(false)}
-              className={`block px-4 py-2 rounded-lg font-semibold transition-colors ${
-                isActive("/")
-                  ? "bg-restaurant-dark text-white"
-                  : "text-restaurant-dark hover:bg-restaurant-light"
-              }`}
+              style={{
+                display: "block",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                backgroundColor: isActive("/") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/") ? "white" : "#1a1a1a",
+                textDecoration: "none",
+                transition: "all 0.3s",
+              }}
             >
               Home
             </Link>
             <Link
               to="/menu"
               onClick={() => setIsOpen(false)}
-              className={`block px-4 py-2 rounded-lg font-semibold transition-colors ${
-                isActive("/menu")
-                  ? "bg-restaurant-dark text-white"
-                  : "text-restaurant-dark hover:bg-restaurant-light"
-              }`}
+              style={{
+                display: "block",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                backgroundColor: isActive("/menu") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/menu") ? "white" : "#1a1a1a",
+                textDecoration: "none",
+                transition: "all 0.3s",
+              }}
             >
               Menu
             </Link>
             <Link
+              to="/cart"
+              onClick={() => setIsOpen(false)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/cart") ? "white" : "#1a1a1a",
+                textDecoration: "none",
+                transition: "all 0.3s",
+              }}
+            >
+              Cart {cartItems > 0 && `(${cartItems})`}
+            </Link>
+            <Link
               to="/login"
               onClick={() => setIsOpen(false)}
-              className={`block px-4 py-2 rounded-lg font-semibold ${
-                isActive("/login")
-                  ? "bg-restaurant-dark text-white"
-                  : "bg-restaurant-light text-restaurant-dark hover:bg-restaurant-accent/20"
-              } transition-colors`}
+              style={{
+                display: "block",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                fontWeight: "600",
+                backgroundColor: isActive("/login") ? "#1a1a1a" : "#faf8f3",
+                color: isActive("/login") ? "white" : "#1a1a1a",
+                textDecoration: "none",
+                transition: "all 0.3s",
+              }}
             >
               Admin Access
             </Link>
