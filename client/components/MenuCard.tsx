@@ -1,49 +1,113 @@
-import { MenuItem } from "@/pages/Menu";
-import { Star } from "lucide-react";
+import { Product } from "@/data/mockProducts";
+import { ShoppingCart } from "lucide-react";
 
 interface MenuCardProps {
-  item: MenuItem;
+  item: Product;
+  onAddToCart: () => void;
 }
 
-export default function MenuCard({ item }: MenuCardProps) {
+export default function MenuCard({ item, onAddToCart }: MenuCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
+    <div style={{
+      backgroundColor: "white",
+      borderRadius: "8px",
+      overflow: "hidden",
+      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+      transition: "box-shadow 0.3s",
+      display: "flex",
+      flexDirection: "column",
+    }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.15)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+      }}
+    >
       {/* Image */}
-      {item.image_url ? (
-        <div className="h-48 bg-gradient-to-br from-restaurant-accent to-restaurant-gold overflow-hidden">
-          <img
-            src={item.image_url}
-            alt={item.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-          />
-        </div>
-      ) : (
-        <div className="h-48 bg-gradient-to-br from-restaurant-accent to-restaurant-gold flex items-center justify-center">
-          <Star className="w-12 h-12 text-white opacity-50" />
-        </div>
-      )}
+      <div style={{
+        height: "200px",
+        background: "linear-gradient(135deg, #c9a961 0%, #e8d5b5 100%)",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <img
+          src={item.image_url}
+          alt={item.name}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "transform 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+          }}
+        />
+      </div>
 
       {/* Content */}
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="text-xl font-bold text-restaurant-dark flex-1">{item.name}</h3>
-          <span className="text-2xl font-bold text-restaurant-accent ml-2">
+      <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "12px" }}>
+          <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "#1a1a1a", flex: 1 }}>
+            {item.name}
+          </h3>
+          <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#c9a961", marginLeft: "8px" }}>
             ${Number(item.price).toFixed(2)}
           </span>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-          {item.description || "An exquisite dish crafted with care"}
+        <p style={{ color: "#666", fontSize: "0.875rem", marginBottom: "16px", lineHeight: "1.5", flex: 1 }}>
+          {item.description}
         </p>
 
-        <div className="flex items-center gap-2">
-          <span className="inline-block px-3 py-1 bg-restaurant-light rounded-full text-sm font-semibold text-restaurant-dark">
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+          <span style={{
+            display: "inline-block",
+            padding: "4px 12px",
+            backgroundColor: "#faf8f3",
+            borderRadius: "9999px",
+            fontSize: "0.875rem",
+            fontWeight: "600",
+            color: "#1a1a1a",
+          }}>
             {item.category}
           </span>
         </div>
 
-        <button className="mt-4 w-full py-2 bg-restaurant-dark text-white font-semibold rounded-lg hover:bg-restaurant-accent hover:text-restaurant-dark transition-all duration-300">
-          Add to Order
+        <button
+          onClick={onAddToCart}
+          style={{
+            width: "100%",
+            padding: "12px",
+            backgroundColor: "#1a1a1a",
+            color: "white",
+            fontWeight: "600",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            transition: "all 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#c9a961";
+            e.currentTarget.style.color = "#1a1a1a";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "#1a1a1a";
+            e.currentTarget.style.color = "white";
+          }}
+        >
+          <ShoppingCart size={18} />
+          Add to Cart
         </button>
       </div>
     </div>

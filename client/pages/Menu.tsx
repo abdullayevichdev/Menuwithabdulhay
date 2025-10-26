@@ -1,90 +1,61 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@shared/supabaseClient";
+import { useState } from "react";
+import { mockProducts } from "@/data/mockProducts";
 import MenuCard from "@/components/MenuCard";
-import { Loader2 } from "lucide-react";
-
-export interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image_url: string;
-  created_at: string;
-}
+import { useCart } from "@/context/CartContext";
 
 const CATEGORIES = ["All", "Appetizers", "Main Course", "Desserts", "Beverages"];
 
 export default function Menu() {
-  const [menu, setMenu] = useState<MenuItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchMenu();
-    
-    // Subscribe to real-time updates
-    const channel = supabase
-      .channel("realtime-menu")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "menu_items" },
-        () => fetchMenu()
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  async function fetchMenu() {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("menu_items")
-        .select("*")
-        .order("category", { ascending: true });
-
-      if (error) throw error;
-      setMenu(data || []);
-    } catch (error) {
-      console.error("Error fetching menu:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { addItem } = useCart();
 
   const filteredMenu =
     selectedCategory === "All"
-      ? menu
-      : menu.filter((item) => item.category === selectedCategory);
+      ? mockProducts
+      : mockProducts.filter((item) => item.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-restaurant-light">
+    <div className="min-h-screen" style={{ backgroundColor: "#faf8f3" }}>
       {/* Header */}
-      <section className="bg-restaurant-dark text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Our Menu</h1>
-          <p className="text-xl text-gray-300">
+      <section style={{ backgroundColor: "#1a1a1a", color: "white", padding: "48px 24px" }}>
+        <div style={{ maxWidth: "80rem", margin: "0 auto", textAlign: "center" }}>
+          <h1 style={{ fontSize: "3rem", fontWeight: "bold", marginBottom: "16px" }}>
+            Our Menu
+          </h1>
+          <p style={{ fontSize: "1.25rem", color: "#ccc" }}>
             Discover our culinary creations
           </p>
         </div>
       </section>
 
       {/* Category Filter */}
-      <section className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-wrap gap-3 justify-center">
+      <section style={{ backgroundColor: "white", borderBottom: "1px solid #e5e7eb", position: "sticky", top: 0, zIndex: 10 }}>
+        <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "24px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "center" }}>
             {CATEGORIES.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-restaurant-dark text-white shadow-lg"
-                    : "bg-restaurant-light text-restaurant-dark border-2 border-restaurant-dark hover:bg-restaurant-accent/20"
-                }`}
+                style={{
+                  padding: "8px 24px",
+                  borderRadius: "9999px",
+                  fontWeight: "600",
+                  border: selectedCategory === category ? "none" : "2px solid #1a1a1a",
+                  backgroundColor: selectedCategory === category ? "#1a1a1a" : "#faf8f3",
+                  color: selectedCategory === category ? "white" : "#1a1a1a",
+                  cursor: "pointer",
+                  transition: "all 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategory !== category) {
+                    e.currentTarget.style.backgroundColor = "#e8d5b5";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategory !== category) {
+                    e.currentTarget.style.backgroundColor = "#faf8f3";
+                  }
+                }}
               >
                 {category}
               </button>
@@ -94,21 +65,17 @@ export default function Menu() {
       </section>
 
       {/* Menu Items */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-restaurant-accent" />
-            </div>
-          ) : filteredMenu.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section style={{ padding: "64px 24px" }}>
+        <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
+          {filteredMenu.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "32px" }}>
               {filteredMenu.map((item) => (
-                <MenuCard key={item.id} item={item} />
+                <MenuCard key={item.id} item={item} onAddToCart={() => addItem(item)} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <p className="text-xl text-gray-600">
+            <div style={{ textAlign: "center", padding: "80px 20px" }}>
+              <p style={{ fontSize: "1.25rem", color: "#666" }}>
                 No items found in this category. Check back soon!
               </p>
             </div>
