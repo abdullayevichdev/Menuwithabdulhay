@@ -36,7 +36,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div style={{ display: "none", gap: "32px", alignItems: "center" }} className="hidden md:flex">
+          <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
             <Link
               to="/"
               style={{
