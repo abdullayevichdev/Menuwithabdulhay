@@ -16,8 +16,8 @@ export default {
       colors: {
         restaurant: {
           dark: "#1a1a1a",
-          accent: "#d4a373",
-          gold: "#c9a961",
+          accent: "#c9a961",
+          gold: "#e8d5b5",
           light: "#faf8f3",
         },
         border: "hsl(var(--border))",
