@@ -8,15 +8,16 @@ interface MenuCardProps {
 
 export default function MenuCard({ item, onAddToCart }: MenuCardProps) {
   return (
-    <div style={{
-      backgroundColor: "white",
-      borderRadius: "8px",
-      overflow: "hidden",
-      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-      transition: "box-shadow 0.3s",
-      display: "flex",
-      flexDirection: "column",
-    }}
+    <div
+      style={{
+        backgroundColor: "white",
+        borderRadius: "8px",
+        overflow: "hidden",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+        transition: "box-shadow 0.3s",
+        display: "flex",
+        flexDirection: "column",
+      }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.15)";
       }}
@@ -25,14 +26,16 @@ export default function MenuCard({ item, onAddToCart }: MenuCardProps) {
       }}
     >
       {/* Image */}
-      <div style={{
-        height: "200px",
-        background: "linear-gradient(135deg, #c9a961 0%, #e8d5b5 100%)",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
+      <div
+        style={{
+          height: "200px",
+          background: "linear-gradient(135deg, #c9a961 0%, #e8d5b5 100%)",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <img
           src={item.image_url}
           alt={item.name}
@@ -52,30 +55,75 @@ export default function MenuCard({ item, onAddToCart }: MenuCardProps) {
       </div>
 
       {/* Content */}
-      <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "12px" }}>
-          <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "#1a1a1a", flex: 1 }}>
+      <div
+        style={{
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "start",
+            marginBottom: "12px",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: "bold",
+              color: "#1a1a1a",
+              flex: 1,
+            }}
+          >
             {item.name}
           </h3>
-          <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#c9a961", marginLeft: "8px" }}>
+          <span
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              color: "#c9a961",
+              marginLeft: "8px",
+            }}
+          >
             ${Number(item.price).toFixed(2)}
           </span>
         </div>
 
-        <p style={{ color: "#666", fontSize: "0.875rem", marginBottom: "16px", lineHeight: "1.5", flex: 1 }}>
+        <p
+          style={{
+            color: "#666",
+            fontSize: "0.875rem",
+            marginBottom: "16px",
+            lineHeight: "1.5",
+            flex: 1,
+          }}
+        >
           {item.description}
         </p>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-          <span style={{
-            display: "inline-block",
-            padding: "4px 12px",
-            backgroundColor: "#faf8f3",
-            borderRadius: "9999px",
-            fontSize: "0.875rem",
-            fontWeight: "600",
-            color: "#1a1a1a",
-          }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "16px",
+          }}
+        >
+          <span
+            style={{
+              display: "inline-block",
+              padding: "4px 12px",
+              backgroundColor: "#faf8f3",
+              borderRadius: "9999px",
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1a1a1a",
+            }}
+          >
             {item.category}
           </span>
         </div>

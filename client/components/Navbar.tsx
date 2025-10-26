@@ -12,9 +12,25 @@ export default function Navbar() {
   const cartItems = getTotalItems();
 
   return (
-    <nav style={{ backgroundColor: "white", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", position: "sticky", top: 0, zIndex: 50 }}>
-      <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "16px 24px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <nav
+      style={{
+        backgroundColor: "white",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+      }}
+    >
+      <div
+        style={{ maxWidth: "80rem", margin: "0 auto", padding: "16px 24px" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {/* Logo */}
           <Link
             to="/"
@@ -32,7 +48,10 @@ export default function Navbar() {
               e.currentTarget.style.color = "#1a1a1a";
             }}
           >
-            🍽️ <span style={{ display: "none" }} className="hidden sm:inline">Culinary</span>
+            🍽️{" "}
+            <span style={{ display: "none" }} className="hidden sm:inline">
+              Culinary
+            </span>
           </Link>
 
           {/* Desktop Menu */}
@@ -70,33 +89,37 @@ export default function Navbar() {
                 textDecoration: "none",
               }}
             >
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 16px",
-                backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/cart") ? "white" : "#1a1a1a",
-                borderRadius: "8px",
-                fontWeight: "600",
-                transition: "all 0.3s",
-                cursor: "pointer",
-              }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 16px",
+                  backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
+                  color: isActive("/cart") ? "white" : "#1a1a1a",
+                  borderRadius: "8px",
+                  fontWeight: "600",
+                  transition: "all 0.3s",
+                  cursor: "pointer",
+                }}
+              >
                 <ShoppingCart size={20} />
                 Cart
                 {cartItems > 0 && (
-                  <span style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    minWidth: "24px",
-                    height: "24px",
-                    backgroundColor: "#c9a961",
-                    color: "#1a1a1a",
-                    borderRadius: "50%",
-                    fontSize: "0.75rem",
-                    fontWeight: "bold",
-                  }}>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      minWidth: "24px",
+                      height: "24px",
+                      backgroundColor: "#c9a961",
+                      color: "#1a1a1a",
+                      borderRadius: "50%",
+                      fontSize: "0.75rem",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {cartItems}
                   </span>
                 )}
@@ -119,7 +142,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button & Cart */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }} className="md:hidden">
+          <div
+            style={{ display: "flex", alignItems: "center", gap: "16px" }}
+            className="md:hidden"
+          >
             <Link
               to="/cart"
               style={{
@@ -131,21 +157,23 @@ export default function Navbar() {
             >
               <ShoppingCart size={24} style={{ color: "#1a1a1a" }} />
               {cartItems > 0 && (
-                <span style={{
-                  position: "absolute",
-                  top: "-8px",
-                  right: "-8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: "#c9a961",
-                  color: "#1a1a1a",
-                  borderRadius: "50%",
-                  fontSize: "0.75rem",
-                  fontWeight: "bold",
-                }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: "#c9a961",
+                    color: "#1a1a1a",
+                    borderRadius: "50%",
+                    fontSize: "0.75rem",
+                    fontWeight: "bold",
+                  }}
+                >
                   {cartItems}
                 </span>
               )}
@@ -168,7 +196,16 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid #e5e7eb", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div
+            style={{
+              marginTop: "16px",
+              paddingTop: "16px",
+              borderTop: "1px solid #e5e7eb",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
             <Link
               to="/"
               onClick={() => setIsOpen(false)}

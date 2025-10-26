@@ -23,12 +23,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addItem = (product: Product, quantity: number = 1) => {
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.product.id === product.id);
+      const existingItem = prevItems.find(
+        (item) => item.product.id === product.id,
+      );
       if (existingItem) {
         return prevItems.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
-            : item
+            : item,
         );
       }
       return [...prevItems, { product, quantity }];
@@ -36,7 +38,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeItem = (productId: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.product.id !== productId));
+    setItems((prevItems) =>
+      prevItems.filter((item) => item.product.id !== productId),
+    );
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -46,8 +50,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
+        item.product.id === productId ? { ...item, quantity } : item,
+      ),
     );
   };
 
@@ -56,7 +60,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return items.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0,
+    );
   };
 
   const getTotalItems = () => {

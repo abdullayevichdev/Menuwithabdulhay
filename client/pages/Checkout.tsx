@@ -23,7 +23,13 @@ export default function Checkout() {
 
   if (items.length === 0 && !orderPlaced) {
     return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#faf8f3", padding: "40px 24px" }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#faf8f3",
+          padding: "40px 24px",
+        }}
+      >
         <div style={{ maxWidth: "600px", margin: "0 auto" }}>
           <button
             onClick={() => navigate("/menu")}
@@ -43,13 +49,22 @@ export default function Checkout() {
             Back to Menu
           </button>
 
-          <div style={{
-            backgroundColor: "white",
-            borderRadius: "12px",
-            padding: "80px 40px",
-            textAlign: "center",
-          }}>
-            <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#1a1a1a", marginBottom: "16px" }}>
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "12px",
+              padding: "80px 40px",
+              textAlign: "center",
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "#1a1a1a",
+                marginBottom: "16px",
+              }}
+            >
               Your cart is empty
             </h1>
             <p style={{ color: "#666", marginBottom: "32px" }}>
@@ -77,20 +92,45 @@ export default function Checkout() {
 
   if (orderPlaced) {
     return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#faf8f3", padding: "40px 24px" }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#faf8f3",
+          padding: "40px 24px",
+        }}
+      >
         <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <div style={{
-            backgroundColor: "white",
-            borderRadius: "12px",
-            padding: "60px 40px",
-            textAlign: "center",
-          }}>
-            <CheckCircle size={80} style={{ margin: "0 auto 24px", color: "#10b981" }} />
-            <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#1a1a1a", marginBottom: "16px" }}>
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "12px",
+              padding: "60px 40px",
+              textAlign: "center",
+            }}
+          >
+            <CheckCircle
+              size={80}
+              style={{ margin: "0 auto 24px", color: "#10b981" }}
+            />
+            <h1
+              style={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "#1a1a1a",
+                marginBottom: "16px",
+              }}
+            >
               Order Placed Successfully!
             </h1>
-            <p style={{ color: "#666", marginBottom: "32px", fontSize: "1.125rem" }}>
-              Thank you for your order. Your food will be prepared and delivered soon.
+            <p
+              style={{
+                color: "#666",
+                marginBottom: "32px",
+                fontSize: "1.125rem",
+              }}
+            >
+              Thank you for your order. Your food will be prepared and delivered
+              soon.
             </p>
             <p style={{ color: "#999", marginBottom: "32px" }}>
               Order confirmation has been sent to your email.
@@ -127,7 +167,9 @@ export default function Checkout() {
     setIsProcessing(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -138,7 +180,13 @@ export default function Checkout() {
   const total = subtotal + tax + delivery;
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#faf8f3", padding: "40px 24px" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#faf8f3",
+        padding: "40px 24px",
+      }}
+    >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: "40px" }}>
@@ -159,19 +207,43 @@ export default function Checkout() {
             <ArrowLeft size={20} />
             Back to Cart
           </button>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#1a1a1a" }}>
+          <h1
+            style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#1a1a1a" }}
+          >
             Checkout
           </h1>
         </div>
 
         {/* Main Content */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 350px", gap: "32px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 350px",
+            gap: "32px",
+          }}
+        >
           {/* Checkout Form */}
           <div>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+            >
               {/* Delivery Information */}
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "32px" }}>
-                <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#1a1a1a", marginBottom: "24px" }}>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "12px",
+                  padding: "32px",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    color: "#1a1a1a",
+                    marginBottom: "24px",
+                  }}
+                >
                   Delivery Information
                 </h2>
 
@@ -233,7 +305,13 @@ export default function Checkout() {
                       fontFamily: "inherit",
                     }}
                   />
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "16px",
+                    }}
+                  >
                     <input
                       type="text"
                       name="city"
@@ -267,8 +345,21 @@ export default function Checkout() {
               </div>
 
               {/* Payment Information */}
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "32px" }}>
-                <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#1a1a1a", marginBottom: "24px" }}>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "12px",
+                  padding: "32px",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    color: "#1a1a1a",
+                    marginBottom: "24px",
+                  }}
+                >
                   Payment Information
                 </h2>
 
@@ -301,7 +392,13 @@ export default function Checkout() {
                       fontSize: "1rem",
                     }}
                   />
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "16px",
+                    }}
+                  >
                     <input
                       type="text"
                       name="cardExpiry"
@@ -355,24 +452,52 @@ export default function Checkout() {
 
           {/* Order Summary */}
           <div>
-            <div style={{
-              backgroundColor: "white",
-              borderRadius: "12px",
-              padding: "24px",
-              position: "sticky",
-              top: "100px",
-            }}>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "#1a1a1a", marginBottom: "24px" }}>
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "12px",
+                padding: "24px",
+                position: "sticky",
+                top: "100px",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: "#1a1a1a",
+                  marginBottom: "24px",
+                }}
+              >
                 Order Summary
               </h2>
 
               {/* Items */}
-              <div style={{ marginBottom: "24px", maxHeight: "300px", overflowY: "auto" }}>
+              <div
+                style={{
+                  marginBottom: "24px",
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
                 {items.map((item) => (
-                  <div key={item.product.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px solid #e5e7eb" }}>
+                  <div
+                    key={item.product.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: "12px",
+                      paddingBottom: "12px",
+                      borderBottom: "1px solid #e5e7eb",
+                    }}
+                  >
                     <div>
-                      <p style={{ fontWeight: "600", color: "#1a1a1a" }}>{item.product.name}</p>
-                      <p style={{ color: "#666", fontSize: "0.875rem" }}>x{item.quantity}</p>
+                      <p style={{ fontWeight: "600", color: "#1a1a1a" }}>
+                        {item.product.name}
+                      </p>
+                      <p style={{ color: "#666", fontSize: "0.875rem" }}>
+                        x{item.quantity}
+                      </p>
                     </div>
                     <p style={{ fontWeight: "600", color: "#1a1a1a" }}>
                       ${(item.product.price * item.quantity).toFixed(2)}
@@ -382,28 +507,61 @@ export default function Checkout() {
               </div>
 
               {/* Totals */}
-              <div style={{ borderTop: "2px solid #e5e7eb", paddingTop: "16px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", color: "#666" }}>
+              <div
+                style={{ borderTop: "2px solid #e5e7eb", paddingTop: "16px" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "12px",
+                    color: "#666",
+                  }}
+                >
                   <span>Subtotal:</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", color: "#666" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "12px",
+                    color: "#666",
+                  }}
+                >
                   <span>Tax (8%):</span>
                   <span>${tax.toFixed(2)}</span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px", color: "#666" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "24px",
+                    color: "#666",
+                  }}
+                >
                   <span>Delivery:</span>
                   <span>${delivery.toFixed(2)}</span>
                 </div>
 
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  paddingTop: "16px",
-                  borderTop: "2px solid #e5e7eb",
-                }}>
-                  <span style={{ fontWeight: "bold", color: "#1a1a1a" }}>Total:</span>
-                  <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#c9a961" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    paddingTop: "16px",
+                    borderTop: "2px solid #e5e7eb",
+                  }}
+                >
+                  <span style={{ fontWeight: "bold", color: "#1a1a1a" }}>
+                    Total:
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "bold",
+                      color: "#c9a961",
+                    }}
+                  >
                     ${total.toFixed(2)}
                   </span>
                 </div>
