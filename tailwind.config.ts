@@ -14,6 +14,12 @@ export default {
     },
     extend: {
       colors: {
+        restaurant: {
+          dark: "#1a1a1a",
+          accent: "#d4a373",
+          gold: "#c9a961",
+          light: "#faf8f3",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
