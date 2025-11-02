@@ -1,8 +1,55 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@shared/supabaseClient";
-import { MenuItem } from "./Menu";
+import { supabase } from "../supabaseClient"; // ✅ to‘g‘rilangan import
 import { Trash2, LogOut, Plus, Loader2 } from "lucide-react";
+import { mockProducts } from "@/data/mockProducts";
+
+// ✅ MenuItem tipi e’lon qilindi
+type MenuItem = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image_url: string;
+};
+
+async function uploadImageFromUrlToStorage(url: string, nameHint: string) {
+  const tryFetch = async (src: string) => {
+    const res = await fetch(src, { referrerPolicy: "no-referrer", mode: "cors" as RequestMode });
+    if (!res.ok) throw new Error("Failed to fetch image: " + res.status);
+    return res.blob();
+  };
+  try {
+    let blob: Blob;
+    try {
+      blob = await tryFetch(url);
+    } catch (e) {
+      // Retry via images.weserv.nl proxy to bypass CORS blocks
+      try {
+        const u = new URL(url);
+        const proxied = `https://images.weserv.nl/?url=${encodeURIComponent(`${u.host}${u.pathname}${u.search || ""}`)}`;
+        blob = await tryFetch(proxied);
+      } catch (e2) {
+        throw e2;
+      }
+    }
+    const ext = (url.split(".").pop() || "jpg").split("?")[0].split("#")[0];
+    const safeName = nameHint.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+    const path = `${Date.now()}-${safeName}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("menu_images").upload(path, blob, {
+      upsert: true,
+      contentType: (blob as any).type || "image/jpeg",
+    });
+    if (upErr) throw upErr;
+    const { data: pub } = supabase.storage.from("menu_images").getPublicUrl(path);
+    return pub.publicUrl;
+  } catch (e) {
+    console.warn("Rehost failed for", url, e);
+    // Do NOT write placeholder to DB; keep original so frontend proxy can render it
+    return url;
+  }
+}
 
 export default function Admin() {
   const [items, setItems] = useState<MenuItem[]>([]);
@@ -63,6 +110,7 @@ export default function Admin() {
       const price = parseFloat(form.price);
 
       if (editingId) {
+        // ✅ update mavjud element
         const { error } = await supabase
           .from("menu_items")
           .update({
@@ -77,6 +125,7 @@ export default function Admin() {
         if (error) throw error;
         setEditingId(null);
       } else {
+        // ✅ yangi element qo‘shish
         const { error } = await supabase.from("menu_items").insert([
           {
             name: form.name,
@@ -90,6 +139,7 @@ export default function Admin() {
         if (error) throw error;
       }
 
+      // ✅ forma tozalash
       setForm({
         name: "",
         description: "",
@@ -97,6 +147,7 @@ export default function Admin() {
         category: "Main Course",
         image_url: "",
       });
+
       fetchItems();
     } catch (error) {
       console.error("Error saving item:", error);
@@ -109,7 +160,6 @@ export default function Admin() {
 
     try {
       const { error } = await supabase.from("menu_items").delete().eq("id", id);
-
       if (error) throw error;
       fetchItems();
     } catch (error) {
@@ -141,13 +191,150 @@ export default function Admin() {
       <div className="bg-restaurant-dark text-white px-6 py-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold">Menu Management</h1>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-restaurant-dark rounded-lg font-semibold hover:bg-restaurant-accent transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            Logout
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                const ok = window.confirm(
+                  "Are you sure? This will DELETE all items and seed ONLY Uzbek/Turk/European set.",
+                );
+                if (!ok) return;
+                try {
+                  // 1) Clear all rows
+                  const del = await supabase.from("menu_items").delete().gte("id", 0);
+                  if (del.error) throw del.error;
+                  // 2) Seed ONLY categories: Uzbek / Turkish / European (take from current mockProducts)
+                  const allowed = new Set(["Uzbek", "Turkish", "European", "Desserts", "Beverages"]);
+                  const raw = mockProducts
+                    .filter((p) => allowed.has(p.category))
+                    .map(({ id, ...rest }) => rest);
+                  // Rehost images to Supabase Storage to avoid hotlink issues
+                  const payload = await Promise.all(
+                    raw.map(async (item) => ({
+                      ...item,
+                      image_url: item.image_url ? await uploadImageFromUrlToStorage(item.image_url, item.name) : item.image_url,
+                    })),
+                  );
+                  const ins = await supabase.from("menu_items").insert(payload);
+                  if (ins.error) throw ins.error;
+                  await fetchItems();
+                  alert("Cleared and seeded Uzbek/Turk/European items successfully.");
+                } catch (e: any) {
+                  console.error("Clear & Seed failed", e);
+                  alert("Clear & Seed failed: " + (e?.message || "Unknown error"));
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+            >
+              Clear & Seed (Uzbek/Turk/European only)
+            </button>
+            <button
+              onClick={async () => {
+                try {
+                  setLoading(true);
+                  // Build lookup by name from mockProducts
+                  const map = new Map<string, string>();
+                  for (const p of mockProducts) {
+                    if (p.name && p.image_url) map.set(p.name.trim().toLowerCase(), p.image_url);
+                  }
+                  // Fetch current rows
+                  const { data, error } = await supabase
+                    .from("menu_items")
+                    .select("id,name,image_url");
+                  if (error) throw error;
+                  const rows = (data || []) as { id: string; name: string; image_url: string | null }[];
+                  for (const row of rows) {
+                    const key = (row.name || "").trim().toLowerCase();
+                    const newUrl = map.get(key);
+                    if (!newUrl) continue;
+                    if (row.image_url === newUrl) continue;
+                    const upd = await supabase
+                      .from("menu_items")
+                      .update({ image_url: newUrl })
+                      .eq("id", row.id);
+                    if (upd.error) console.warn("Update failed for", row.id, upd.error);
+                  }
+                  await fetchItems();
+                  alert("Images restored from mockProducts by name. Now they will render via display proxy.");
+                } catch (e: any) {
+                  console.error("Restore images failed", e);
+                  alert("Restore images failed: " + (e?.message || "Unknown error"));
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-60"
+              disabled={loading}
+            >
+              Restore images from mockProducts (by name)
+            </button>
+            <button
+              onClick={async () => {
+                if (loading) return;
+                const ok = window.confirm("Rehost ALL existing images to Supabase Storage now?");
+                if (!ok) return;
+                try {
+                  setLoading(true);
+                  // Fetch existing items
+                  const { data, error } = await supabase
+                    .from("menu_items")
+                    .select("id,name,image_url");
+                  if (error) throw error;
+                  const rows = (data || []) as { id: string; name: string; image_url: string | null }[];
+                  for (const row of rows) {
+                    if (!row.image_url) continue;
+                    const alreadyStorage = row.image_url.includes("/storage/v1/object/public/menu_images/");
+                    if (alreadyStorage) continue;
+                    const newUrl = await uploadImageFromUrlToStorage(row.image_url, row.name || `item-${row.id}`);
+                    if (newUrl && newUrl !== row.image_url) {
+                      const upd = await supabase
+                        .from("menu_items")
+                        .update({ image_url: newUrl })
+                        .eq("id", row.id);
+                      if (upd.error) console.warn("Update failed for", row.id, upd.error);
+                    }
+                  }
+                  await fetchItems();
+                  alert("Rehost completed. Existing images now use Storage/public URLs (or placeholder if failed). ");
+                } catch (e: any) {
+                  console.error("Rehost all failed", e);
+                  alert("Rehost all failed: " + (e?.message || "Unknown error"));
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors disabled:opacity-60"
+              disabled={loading}
+              aria-disabled={loading}
+            >
+              {loading ? "Working..." : "Rehost ALL images to Storage"}
+            </button>
+            <button
+              onClick={async () => {
+                try {
+                  const payload = mockProducts.map(({ id, ...rest }) => rest);
+                  const { error } = await supabase
+                    .from("menu_items")
+                    .insert(payload);
+                  if (error) throw error;
+                  fetchItems();
+                  alert("Demo items seeded successfully");
+                } catch (e: any) {
+                  console.error("Seed failed", e);
+                  alert("Seed failed: " + (e?.message || "Unknown error"));
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-restaurant-gold text-restaurant-dark rounded-lg font-semibold hover:bg-restaurant-accent transition-colors"
+            >
+              Seed demo items
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-white text-restaurant-dark rounded-lg font-semibold hover:bg-restaurant-accent transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+              Logout
+            </button>
+          </div>
         </div>
         <p className="text-gray-300 mt-2">
           Logged in as: <span className="font-semibold">{user?.email}</span>
@@ -164,6 +351,7 @@ export default function Admin() {
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name */}
                 <div>
                   <label className="block text-sm font-semibold text-restaurant-dark mb-2">
                     Item Name *
@@ -179,6 +367,7 @@ export default function Admin() {
                   />
                 </div>
 
+                {/* Description */}
                 <div>
                   <label className="block text-sm font-semibold text-restaurant-dark mb-2">
                     Description
@@ -194,6 +383,7 @@ export default function Admin() {
                   />
                 </div>
 
+                {/* Category */}
                 <div>
                   <label className="block text-sm font-semibold text-restaurant-dark mb-2">
                     Category
@@ -212,6 +402,7 @@ export default function Admin() {
                   </select>
                 </div>
 
+                {/* Price */}
                 <div>
                   <label className="block text-sm font-semibold text-restaurant-dark mb-2">
                     Price *
@@ -228,21 +419,66 @@ export default function Admin() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-restaurant-dark mb-2">
-                    Image URL
-                  </label>
-                  <input
-                    type="url"
-                    value={form.image_url}
-                    onChange={(e) =>
-                      setForm({ ...form, image_url: e.target.value })
-                    }
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-restaurant-accent focus:outline-none"
-                  />
-                </div>
+  {/* Image Upload va URL */}
+<div>
+  <label className="block text-sm font-semibold text-restaurant-dark mb-2">
+    Image Upload / URL
+  </label>
 
+  {/* Fayldan yuklash */}
+  <input
+    type="file"
+    accept="image/*"
+    onChange={async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const fileName = `${Date.now()}-${file.name}`;
+
+      // Supabase Storage'ga yuklash
+      const { data, error } = await supabase.storage
+        .from("menu_images")
+        .upload(fileName, file);
+
+      if (error) {
+        alert("Upload failed: " + error.message);
+        return;
+      }
+
+      // Public URL olish
+      const { data: publicUrlData } = supabase.storage
+        .from("menu_images")
+        .getPublicUrl(fileName);
+
+      setForm({
+        ...form,
+        image_url: publicUrlData.publicUrl,
+      });
+    }}
+    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-restaurant-accent focus:outline-none"
+  />
+
+  {/* URL ni qo‘lda yozish imkoniyati ham */}
+  <input
+    type="url"
+    value={form.image_url}
+    onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+    placeholder="https://example.com/image.jpg"
+    className="w-full mt-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-restaurant-accent focus:outline-none"
+  />
+
+  {/* Yuklangan rasmni oldindan ko‘rish */}
+  {form.image_url && (
+    <img
+      src={form.image_url}
+      alt="Preview"
+      className="mt-3 w-40 h-40 object-cover rounded-lg border"
+    />
+  )}
+</div>
+
+
+                {/* Buttons */}
                 <div className="flex gap-2 pt-4">
                   <button
                     type="submit"
@@ -274,7 +510,7 @@ export default function Admin() {
             </div>
           </div>
 
-          {/* Items List Section */}
+          {/* Items List */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-restaurant-dark mb-6">
               Current Menu Items
@@ -306,7 +542,7 @@ export default function Admin() {
                             {item.category}
                           </span>
                           <span className="text-lg font-bold text-restaurant-accent">
-                            ${Number(item.price).toFixed(2)}
+                            ${parseFloat(item.price.toString()).toFixed(2)}
                           </span>
                         </div>
                       </div>

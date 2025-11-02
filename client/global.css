@@ -118,3 +118,46 @@
     white-space: pre;
   }
 }
+
+/* Restaurant theme utilities */
+.bg-restaurant-dark { background-color: #1a1a1a; }
+.text-restaurant-dark { color: #1a1a1a; }
+.bg-restaurant-light { background-color: #faf8f3; }
+.text-restaurant-light { color: #faf8f3; }
+.text-restaurant-accent { color: #c9a961; }
+.bg-restaurant-accent { background-color: #c9a961; }
+.bg-restaurant-gold { background-color: #e8d5b5; }
+
+/* Reusable animations */
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes skeleton { 0% { background-color: #f3f4f6; } 50% { background-color: #e5e7eb; } 100% { background-color: #f3f4f6; } }
+.animate-fade-in { animation: fade-in 400ms ease-out both; }
+.animate-slide-up { animation: slide-up 500ms ease-out both; }
+.animate-skeleton { animation: skeleton 1.2s ease-in-out infinite; }
+
+/* Sky blue theme utilities */
+.bg-skyblue-gradient { background: linear-gradient(135deg, #e0f2ff 0%, #bae6fd 35%, #7dd3fc 100%); }
+.text-skyblue-dark { color: #0c4a6e; }
+.bg-skyblue-dark { background-color: #0c4a6e; }
+.text-skyblue { color: #0284c7; }
+.bg-skyblue { background-color: #0284c7; }
+.ring-skyblue { box-shadow: 0 0 0 3px rgba(2,132,199,0.25); }
+
+/* Stronger animations */
+@keyframes zoom-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.animate-zoom-in { animation: zoom-in 450ms ease-out both; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-shimmer { background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: shimmer 1.5s linear infinite; }
+
+/* Stagger helpers */
+.stagger > * { opacity: 0; transform: translateY(10px); }
+.stagger.show > * { animation: slide-up 600ms ease-out both; }
+.stagger.show > *:nth-child(1) { animation-delay: 50ms; }
+.stagger.show > *:nth-child(2) { animation-delay: 100ms; }
+.stagger.show > *:nth-child(3) { animation-delay: 150ms; }
+.stagger.show > *:nth-child(4) { animation-delay: 200ms; }
+.stagger.show > *:nth-child(5) { animation-delay: 250ms; }
+.stagger.show > *:nth-child(6) { animation-delay: 300ms; }

@@ -37,7 +37,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-2xl p-8">
           <h1 className="text-3xl font-bold text-restaurant-dark text-center mb-2">
-            Admin Access
+           only enter for Admin 
           </h1>
           <p className="text-gray-600 text-center mb-8">
             Sign in to manage the menu

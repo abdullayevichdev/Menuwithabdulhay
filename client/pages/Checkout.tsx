@@ -65,10 +65,10 @@ export default function Checkout() {
                 marginBottom: "16px",
               }}
             >
-              Your cart is empty
+              Savatingiz bo'sh
             </h1>
             <p style={{ color: "#666", marginBottom: "32px" }}>
-              Please add items to your cart before checking out.
+              Iltimos, to'lovni amalga oshirishdan oldin savatingizga mahsulotlar qo'shing.
             </p>
             <button
               onClick={() => navigate("/menu")}
@@ -82,7 +82,7 @@ export default function Checkout() {
                 cursor: "pointer",
               }}
             >
-              Back to Menu
+              Menyuga qaytish
             </button>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function Checkout() {
                 marginBottom: "16px",
               }}
             >
-              Order Placed Successfully!
+              Buyurtma muvaffaqiyatli berildi!
             </h1>
             <p
               style={{
@@ -129,11 +129,11 @@ export default function Checkout() {
                 fontSize: "1.125rem",
               }}
             >
-              Thank you for your order. Your food will be prepared and delivered
-              soon.
+              Buyurtmangiz uchun rahmat. Sizning taomingiz tayyorlanadi va yetkazib beriladi
+ tez orada.
             </p>
             <p style={{ color: "#999", marginBottom: "32px" }}>
-              Order confirmation has been sent to your email.
+              Buyurtma tasdiqlash xabari sizning elektron pochtangizga yuborildi.
             </p>
             <button
               onClick={() => navigate("/menu")}
@@ -147,7 +147,7 @@ export default function Checkout() {
                 cursor: "pointer",
               }}
             >
-              Order More
+              Buyurtma berish
             </button>
           </div>
         </div>
@@ -205,12 +205,12 @@ export default function Checkout() {
             }}
           >
             <ArrowLeft size={20} />
-            Back to Cart
+            Menyuga qaytish
           </button>
           <h1
             style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#1a1a1a" }}
           >
-            Checkout
+            To'lov
           </h1>
         </div>
 
@@ -244,7 +244,7 @@ export default function Checkout() {
                     marginBottom: "24px",
                   }}
                 >
-                  Delivery Information
+                  Yetkazib berish haqida ma'lumot
                 </h2>
 
                 <div style={{ display: "grid", gap: "16px" }}>
@@ -360,7 +360,7 @@ export default function Checkout() {
                     marginBottom: "24px",
                   }}
                 >
-                  Payment Information
+                 To'lov ma'lumotlari
                 </h2>
 
                 <div style={{ display: "grid", gap: "16px" }}>
@@ -469,7 +469,7 @@ export default function Checkout() {
                   marginBottom: "24px",
                 }}
               >
-                Order Summary
+               Buyurtma xulosasi
               </h2>
 
               {/* Items */}

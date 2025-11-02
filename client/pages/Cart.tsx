@@ -1,10 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Trash2, ShoppingCart, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useState } from "react";
 
 export default function Cart() {
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } =
-    useCart();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    cardNumber: "",
+    address: "",
+    idCard: "",
+  });
+  const navigate = useNavigate();
 
   if (items.length === 0) {
     return (
@@ -29,7 +39,7 @@ export default function Cart() {
             }}
           >
             <ArrowLeft size={20} />
-            Back to Menu
+           Menyuga qaytish
           </Link>
 
           <div
@@ -52,7 +62,7 @@ export default function Cart() {
                 marginBottom: "16px",
               }}
             >
-              Your cart is empty
+              Savatingiz bo'sh
             </h1>
             <p
               style={{
@@ -61,7 +71,7 @@ export default function Cart() {
                 fontSize: "1.125rem",
               }}
             >
-              Add some delicious items from our menu!
+              Menyumizdan mazali taomlarni qo'shing!
             </p>
             <Link
               to="/menu"
@@ -75,7 +85,7 @@ export default function Cart() {
                 borderRadius: "8px",
               }}
             >
-              Continue Shopping
+              Xarid qilishda davom eting
             </Link>
           </div>
         </div>
@@ -107,12 +117,12 @@ export default function Cart() {
             }}
           >
             <ArrowLeft size={20} />
-            Back to Menu
+            Menyuga qaytish
           </Link>
           <h1
             style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#1a1a1a" }}
           >
-            Shopping Cart
+            Xarid savati
           </h1>
         </div>
 
@@ -247,7 +257,7 @@ export default function Cart() {
                       }}
                     >
                       <Trash2 size={16} />
-                      Remove
+                      O'chirish
                     </button>
                   </div>
                 </div>
@@ -274,7 +284,7 @@ export default function Cart() {
                   marginBottom: "24px",
                 }}
               >
-                Order Summary
+                Buyurtma xulosasi
               </h2>
 
               <div style={{ marginBottom: "24px" }}>
@@ -351,26 +361,174 @@ export default function Cart() {
                   marginBottom: "12px",
                 }}
               >
-                Proceed to Checkout
+               Ro'yxatdan o'chirilishda davom etish
               </Link>
 
-              <button
-                onClick={clearCart}
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  backgroundColor: "transparent",
-                  color: "#1a1a1a",
-                  border: "2px solid #1a1a1a",
-                  fontWeight: "600",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                }}
-              >
-                Continue Shopping
-              </button>
+              <div style={{ display: "flex", gap: 12 }}>
+                <button
+                  onClick={() => setShowUserModal(true)}
+                  style={{
+                    flex: 1,
+                    padding: "12px",
+                    backgroundColor: "transparent",
+                    color: "#1a1a1a",
+                    border: "2px solid #1a1a1a",
+                    fontWeight: "600",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Xarid qilishda davom eting
+                </button>
+
+                <button
+                  onClick={clearCart}
+                  style={{
+                    padding: "12px",
+                    backgroundColor: "#fee2e2",
+                    color: "#dc2626",
+                    border: "none",
+                    fontWeight: "600",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    minWidth: 140,
+                  }}
+                >
+                  Savatchani tozalash
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+      <UserInfoModal
+        open={showUserModal}
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
+        onClose={(saved) => {
+          setShowUserModal(false);
+          if (saved) {
+            navigate("/menu");
+          }
+        }}
+      />
+    </div>
+  );
+}
+
+// Simple user info modal
+function UserInfoModal({
+  open,
+  onClose,
+  userInfo,
+  setUserInfo,
+}: {
+  open: boolean;
+  onClose: (saved: boolean) => void;
+  userInfo: { 
+    fullName: string; 
+    phone: string; 
+    email: string; 
+    cardNumber?: string; 
+    address?: string; 
+    idCard?: string 
+  };
+  setUserInfo: React.Dispatch<React.SetStateAction<{
+    fullName: string; 
+    phone: string; 
+    email: string; 
+    cardNumber?: string; 
+    address?: string; 
+    idCard?: string 
+  }>>;
+}) {
+  if (!open) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+        zIndex: 50,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 480,
+          background: "white",
+          borderRadius: 12,
+          padding: 24,
+        }}
+      >
+        <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: 12, color: "#1a1a1a" }}>
+          Foydalanuvchi ma'lumotlari
+        </h3>
+        <p style={{ color: "#666", marginBottom: 16, fontSize: 14 }}>
+          Iltimos, keyingi xaridlarda tezroq buyurtma uchun ma'lumotlaringizni kiriting.
+        </p>
+        <div style={{ display: "grid", gap: 12 }}>
+          <input
+            placeholder="To'liq ism"
+            value={userInfo.fullName}
+            onChange={(e) => setUserInfo({ ...userInfo, fullName: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+          />
+          <input
+            placeholder="Telefon"
+            value={userInfo.phone}
+            onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+          />
+          <input
+            placeholder="Email (optional)"
+            value={userInfo.email}
+            onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+          />
+          <input
+            placeholder="Karta raqami (16 raqam)"
+            value={userInfo.cardNumber || ""}
+            onChange={(e) => setUserInfo({ ...userInfo, cardNumber: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+            inputMode="numeric"
+            maxLength={19}
+          />
+          <input
+            placeholder="Yashash manzili"
+            value={userInfo.address || ""}
+            onChange={(e) => setUserInfo({ ...userInfo, address: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+          />
+          <input
+            placeholder="ID-karta / Passport raqami"
+            value={userInfo.idCard || ""}
+            onChange={(e) => setUserInfo({ ...userInfo, idCard: e.target.value })}
+            style={{ padding: 12, border: "2px solid #e5e7eb", borderRadius: 8 }}
+          />
+        </div>
+        <div style={{ display: "flex", gap: 12, marginTop: 16, justifyContent: "flex-end" }}>
+          <button
+            onClick={() => onClose(false)}
+            style={{ padding: "10px 14px", background: "#f3f4f6", border: "none", borderRadius: 8, cursor: "pointer" }}
+          >
+            Bekor qilish
+          </button>
+          <button
+            onClick={() => {
+              try {
+                localStorage.setItem("user_info", JSON.stringify(userInfo));
+              } catch {}
+              onClose(true);
+            }}
+            style={{ padding: "10px 14px", background: "#1a1a1a", color: "white", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 700 }}
+          >
+            Saqlash va davom etish
+          </button>
         </div>
       </div>
     </div>

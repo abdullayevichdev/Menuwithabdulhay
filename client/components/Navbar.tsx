@@ -14,8 +14,8 @@ export default function Navbar() {
   return (
     <nav
       style={{
-        backgroundColor: "white",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+        backgroundColor: "#1a1a1a",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
         position: "sticky",
         top: 0,
         zIndex: 50,
@@ -37,7 +37,7 @@ export default function Navbar() {
             style={{
               fontSize: "1.5rem",
               fontWeight: "bold",
-              color: "#1a1a1a",
+              color: "#faf8f3",
               textDecoration: "none",
               transition: "color 0.3s",
             }}
@@ -45,7 +45,7 @@ export default function Navbar() {
               e.currentTarget.style.color = "#c9a961";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = "#1a1a1a";
+              e.currentTarget.style.color = "#faf8f3";
             }}
           >
             🍽️{" "}
@@ -61,7 +61,7 @@ export default function Navbar() {
               style={{
                 fontWeight: "600",
                 textDecoration: "none",
-                color: isActive("/") ? "#c9a961" : "#1a1a1a",
+                color: isActive("/") ? "#c9a961" : "#faf8f3",
                 borderBottom: isActive("/") ? "2px solid #c9a961" : "none",
                 paddingBottom: isActive("/") ? "4px" : "0",
                 transition: "color 0.3s",
@@ -74,7 +74,7 @@ export default function Navbar() {
               style={{
                 fontWeight: "600",
                 textDecoration: "none",
-                color: isActive("/menu") ? "#c9a961" : "#1a1a1a",
+                color: isActive("/menu") ? "#c9a961" : "#faf8f3",
                 borderBottom: isActive("/menu") ? "2px solid #c9a961" : "none",
                 paddingBottom: isActive("/menu") ? "4px" : "0",
                 transition: "color 0.3s",
@@ -95,8 +95,8 @@ export default function Navbar() {
                   alignItems: "center",
                   gap: "8px",
                   padding: "8px 16px",
-                  backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
-                  color: isActive("/cart") ? "white" : "#1a1a1a",
+                  backgroundColor: isActive("/cart") ? "#c9a961" : "#2a2a2a",
+                  color: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
                   borderRadius: "8px",
                   fontWeight: "600",
                   transition: "all 0.3s",
@@ -113,8 +113,8 @@ export default function Navbar() {
                       justifyContent: "center",
                       minWidth: "24px",
                       height: "24px",
-                      backgroundColor: "#c9a961",
-                      color: "#1a1a1a",
+                      backgroundColor: "#1a1a1a",
+                      color: "#faf8f3",
                       borderRadius: "50%",
                       fontSize: "0.75rem",
                       fontWeight: "bold",
@@ -131,8 +131,8 @@ export default function Navbar() {
                 padding: "8px 24px",
                 borderRadius: "8px",
                 fontWeight: "600",
-                backgroundColor: isActive("/login") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/login") ? "white" : "#1a1a1a",
+                backgroundColor: isActive("/login") ? "#c9a961" : "#2a2a2a",
+                color: isActive("/login") ? "#1a1a1a" : "#faf8f3",
                 textDecoration: "none",
                 transition: "all 0.3s",
               }}
@@ -155,7 +155,7 @@ export default function Navbar() {
                 alignItems: "center",
               }}
             >
-              <ShoppingCart size={24} style={{ color: "#1a1a1a" }} />
+              <ShoppingCart size={24} style={{ color: "#faf8f3" }} />
               {cartItems > 0 && (
                 <span
                   style={{
@@ -182,7 +182,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               style={{
                 padding: "8px",
-                color: "#1a1a1a",
+                color: "#faf8f3",
                 backgroundColor: "transparent",
                 border: "none",
                 cursor: "pointer",
@@ -214,8 +214,8 @@ export default function Navbar() {
                 padding: "8px 16px",
                 borderRadius: "8px",
                 fontWeight: "600",
-                backgroundColor: isActive("/") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/") ? "white" : "#1a1a1a",
+                backgroundColor: isActive("/") ? "#c9a961" : "#2a2a2a",
+                color: isActive("/") ? "#1a1a1a" : "#faf8f3",
                 textDecoration: "none",
                 transition: "all 0.3s",
               }}
@@ -230,8 +230,8 @@ export default function Navbar() {
                 padding: "8px 16px",
                 borderRadius: "8px",
                 fontWeight: "600",
-                backgroundColor: isActive("/menu") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/menu") ? "white" : "#1a1a1a",
+                backgroundColor: isActive("/menu") ? "#c9a961" : "#2a2a2a",
+                color: isActive("/menu") ? "#1a1a1a" : "#faf8f3",
                 textDecoration: "none",
                 transition: "all 0.3s",
               }}
@@ -248,8 +248,8 @@ export default function Navbar() {
                 padding: "8px 16px",
                 borderRadius: "8px",
                 fontWeight: "600",
-                backgroundColor: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/cart") ? "white" : "#1a1a1a",
+                backgroundColor: isActive("/cart") ? "#c9a961" : "#2a2a2a",
+                color: isActive("/cart") ? "#1a1a1a" : "#faf8f3",
                 textDecoration: "none",
                 transition: "all 0.3s",
               }}
@@ -264,8 +264,8 @@ export default function Navbar() {
                 padding: "8px 16px",
                 borderRadius: "8px",
                 fontWeight: "600",
-                backgroundColor: isActive("/login") ? "#1a1a1a" : "#faf8f3",
-                color: isActive("/login") ? "white" : "#1a1a1a",
+                backgroundColor: isActive("/login") ? "#c9a961" : "#2a2a2a",
+                color: isActive("/login") ? "#1a1a1a" : "#faf8f3",
                 textDecoration: "none",
                 transition: "all 0.3s",
               }}

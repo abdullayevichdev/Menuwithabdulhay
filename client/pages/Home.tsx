@@ -1,17 +1,27 @@
 import { Link } from "react-router-dom";
 import { ChefHat, Clock, Truck, Star } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 }
+    );
+    document.querySelectorAll<HTMLElement>(".stagger").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
   return (
-    <div>
+    <div className="bg-skyblue-gradient">
       {/* Hero Section */}
-      <section
-        style={{
-          backgroundColor: "#1a1a1a",
-          color: "white",
-          padding: "120px 24px",
-        }}
-      >
+      <section className="animate-zoom-in" style={{ padding: "120px 24px" }}>
         <div
           style={{ maxWidth: "80rem", margin: "0 auto", textAlign: "center" }}
         >
@@ -24,21 +34,24 @@ export default function Home() {
               fontWeight: "bold",
               marginBottom: "16px",
               lineHeight: "1.2",
+              color: "#0c4a6e",
             }}
           >
-            Culinary Excellence
+            Abdulhay's Restaurant Menues
           </h1>
           <p
             style={{
               fontSize: "1.25rem",
-              color: "#ccc",
+              color: "#0c4a6e",
+              opacity: 0.8,
               marginBottom: "32px",
               maxWidth: "600px",
               margin: "0 auto 32px",
             }}
           >
-            Experience fine dining delivered to your doorstep. Fresh
-            ingredients, expert preparation, unforgettable taste.
+            Ushbu saytda ko'plab mazali taomlar mavjud bo'lib, ular sizning
+            didingizga mos keladi. Har bir taom yuqori sifatli ingredientlardan
+            tayyorlangan va tez yetkazib beriladi.
           </p>
           <Link
             to="/menu"
@@ -52,7 +65,7 @@ export default function Home() {
               fontSize: "1.125rem",
               borderRadius: "8px",
               transition: "all 0.3s",
-            }}
+              }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#e8d5b5";
               e.currentTarget.style.transform = "translateY(-2px)";
@@ -62,24 +75,24 @@ export default function Home() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            Explore Menu →
+            Menyuni ko'rish →
           </Link>
         </div>
       </section>
 
       {/* Features Section */}
-      <section style={{ backgroundColor: "#faf8f3", padding: "80px 24px" }}>
+      <section style={{ backgroundColor: "#ffffffcc", padding: "80px 24px" }} className="stagger">
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
           <h2
             style={{
               fontSize: "2.5rem",
               fontWeight: "bold",
-              color: "#1a1a1a",
+              color: "#0c4a6e",
               textAlign: "center",
               marginBottom: "64px",
             }}
           >
-            Why Choose Us?
+            Nimaga bizni tanlaysiz?
           </h2>
 
           <div
@@ -101,15 +114,15 @@ export default function Home() {
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: "bold",
-                  color: "#1a1a1a",
+                  color: "#0c4a6e",
                   marginBottom: "12px",
                 }}
               >
                 Expert Chefs
               </h3>
-              <p style={{ color: "#666", lineHeight: "1.6" }}>
-                Our culinary experts prepare each dish with precision and
-                passion using the finest ingredients.
+              <p style={{ color: "#0c4a6e", opacity: 0.8, lineHeight: "1.6" }}>
+                Bizning oshpazlik mutaxassislarimiz har bir taomni aniqlik bilan tayyorlaydilar
+eng yaxshi ingredientlardan foydalangan holda ishtiyoq.
               </p>
             </div>
 
@@ -125,15 +138,15 @@ export default function Home() {
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: "bold",
-                  color: "#1a1a1a",
+                  color: "#0c4a6e",
                   marginBottom: "12px",
                 }}
               >
                 Fresh & Quick
               </h3>
-              <p style={{ color: "#666", lineHeight: "1.6" }}>
-                Prepared fresh daily and delivered quickly to ensure you enjoy
-                your meal at its best.
+              <p style={{ color: "#0c4a6e", opacity: 0.8, lineHeight: "1.6" }}>
+                Har kuni yangi tayyorlanadi va sizga zavqlanish uchun tez yetkazib beriladi
+eng yaxshi taomingiz.
               </p>
             </div>
 
@@ -149,15 +162,14 @@ export default function Home() {
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: "bold",
-                  color: "#1a1a1a",
+                  color: "#0c4a6e",
                   marginBottom: "12px",
                 }}
               >
                 Fast Delivery
               </h3>
-              <p style={{ color: "#666", lineHeight: "1.6" }}>
-                Hot meals delivered straight to your table within 30 minutes or
-                less.
+              <p style={{ color: "#0c4a6e", opacity: 0.8, lineHeight: "1.6" }}>
+                Issiq ovqat 30 daqiqa yoki undan kamroq vaqt ichida to'g'ridan-to'g'ri stolingizga yetkazib beriladi.
               </p>
             </div>
           </div>
@@ -165,18 +177,18 @@ export default function Home() {
       </section>
 
       {/* Menu Preview Section */}
-      <section style={{ backgroundColor: "white", padding: "80px 24px" }}>
+      <section style={{ backgroundColor: "#ffffff", padding: "80px 24px" }} className="stagger">
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
           <h2
             style={{
               fontSize: "2.5rem",
               fontWeight: "bold",
-              color: "#1a1a1a",
+              color: "#0c4a6e",
               textAlign: "center",
               marginBottom: "64px",
             }}
           >
-            Our Cuisine
+           Bizning oshxonamiz
           </h2>
 
           <div
@@ -237,13 +249,13 @@ export default function Home() {
                   style={{
                     fontSize: "1.25rem",
                     fontWeight: "bold",
-                    color: "#1a1a1a",
+                    color: "#0c4a6e",
                     marginBottom: "8px",
                   }}
                 >
                   {category.name}
                 </h3>
-                <p style={{ color: "#666", fontSize: "0.95rem" }}>
+                <p style={{ color: "#0c4a6e", opacity: 0.8, fontSize: "0.95rem" }}>
                   {category.desc}
                 </p>
               </div>
@@ -253,13 +265,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section
-        style={{
-          backgroundColor: "#1a1a1a",
-          color: "white",
-          padding: "80px 24px",
-        }}
-      >
+      <section style={{ backgroundColor: "#0c4a6e", color: "white", padding: "80px 24px" }}>
         <div
           style={{ maxWidth: "80rem", margin: "0 auto", textAlign: "center" }}
         >
@@ -270,17 +276,17 @@ export default function Home() {
               marginBottom: "24px",
             }}
           >
-            Ready to taste excellence?
+            Ajoyib ta'mni tatib ko'rishga tayyormisiz?
           </h2>
           <p
             style={{
               fontSize: "1.125rem",
-              color: "#ccc",
+              color: "#e2f3ff",
               marginBottom: "32px",
             }}
           >
-            Browse our menu and place your order now. Your favorite meal is just
-            a click away!
+           Bizning menyuni ko'rib chiqing va hoziroq buyurtma bering. Sizning sevimli taomingiz shunchaki
+bir marta bosish masofasida!
           </p>
           <Link
             to="/menu"
@@ -304,26 +310,19 @@ export default function Home() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            View Full Menu →
+          Menyuni ko'rish →
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer
-        style={{
-          backgroundColor: "#0f0f0f",
-          color: "#999",
-          padding: "40px 24px",
-          textAlign: "center",
-        }}
-      >
+      <footer style={{ backgroundColor: "#083345", color: "#d3eaf8", padding: "40px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
           <p style={{ marginBottom: "8px" }}>
-            © 2024 Culinary Excellence. All rights reserved.
+            ushbu sayt  30.10.2025 da Abdulhay Avazxanov tomonidan yaratilgan.
           </p>
           <p style={{ fontSize: "0.9rem" }}>
-            Delivering premium dining experiences to your home
+            Sizning uyingizga premium ovqatlanish tajribalarini yetkazib berish
           </p>
         </div>
       </footer>
