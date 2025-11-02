@@ -161,3 +161,17 @@
 .stagger.show > *:nth-child(4) { animation-delay: 200ms; }
 .stagger.show > *:nth-child(5) { animation-delay: 250ms; }
 .stagger.show > *:nth-child(6) { animation-delay: 300ms; }
+
+/* Responsive helpers */
+.card-img { height: 200px; }
+@media (max-width: 640px) { /* phones */
+  .card-img { height: 150px; }
+}
+@media (min-width: 641px) and (max-width: 1024px) { /* tablets */
+  .card-img { height: 180px; }
+}
+@media (min-width: 1280px) { /* large desktops */
+  .card-img { height: 240px; }
+}
+
+img { max-width: 100%; height: auto; }

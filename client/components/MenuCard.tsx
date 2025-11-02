@@ -85,8 +85,8 @@ export default function MenuCard({ item, onAddToCart, isFavorite, onToggleFavori
 
       {/* Image */}
 <div
+  className="card-img"
   style={{
-    height: "200px",
     background: "linear-gradient(135deg, #c9a961 0%, #e8d5b5 100%)",
     overflow: "hidden",
     display: "flex",
